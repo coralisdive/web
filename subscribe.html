@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Coralis — Lista de espera</title>
+<meta name="description" content="Únete a la lista de espera de Coralis para recibir noticias del lanzamiento y acceso a la beta.">
+<style>
+:root{
+  --deep-dive:#016D75; --ocean-current:#058F9D; --sea-mist:#8FD0C8;
+  --soft-coral:#F78E7C; --ink:#072A30; --paper:#FFFFFF; --sand:#F7F4EE;
+}
+*{box-sizing:border-box} html,body{margin:0}
+html,body{
+  background:
+  radial-gradient(1100px 700px at 100% -10%, color-mix(in srgb,var(--sea-mist) 22%, #fff), transparent 70%),
+  linear-gradient(180deg,#fff,color-mix(in srgb,var(--sea-mist) 12%,#fff) 55%,var(--sand));
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  color:var(--ink);
+}
+.container{max-width:880px;margin-inline:auto;padding:clamp(16px,3vw,28px)}
+.header{
+  position:sticky;top:0;z-index:10;
+  background:linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.6));
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(1,109,117,.15);
+}
+.nav{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:.6rem}
+.brand img{width:36px;height:36px;object-fit:contain}
+.brand strong{color:var(--deep-dive);font-weight:800}
+.badge{
+  background:var(--soft-coral);
+  color:#fff;
+  border-radius:999px;
+  padding:.28rem .6rem;
+  font-weight:700;
+  font-size:.8rem;
+}
+.wrap{display:grid;place-items:center;min-height:calc(100dvh - 76px)}
+.card{
+  background:#fff;
+  border:1px solid rgba(1,109,117,.18);
+  border-radius:18px;
+  box-shadow:0 20px 50px rgba(1,109,117,.18);
+  padding:clamp(18px,3.2vw,28px);
+  width:min(760px,94vw);
+}
+h1{color:var(--deep-dive);margin:.2rem 0}
+.lead{opacity:.95;margin:0 0 .8rem}
+.list{margin:.6rem 0 1rem 0} .list li{margin-left:1.2rem}
+.input{
+  width:100%;
+  padding:1rem;
+  border:1.6px solid rgba(1,109,117,.25);
+  border-radius:14px;
+  font-size:1rem;
+}
+.actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.6rem}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  padding:.9rem 1.1rem;
+  border-radius:14px;
+  border:2px solid transparent;
+  font-weight:800;
+  cursor:pointer;
+  text-decoration:none;
+}
+.btn-primary{background:var(--ocean-current);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.75);border-color:rgba(1,109,117,.18);color:var(--deep-dive)}
+.note{margin-top:.6rem;font-size:.92rem;opacity:.85}
+.footer{
+  padding:22px 0;
+  border-top:1px solid rgba(1,109,117,.18);
+  background:linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.25));
+}
+.footer .row{
+  max-width:880px;
+  margin-inline:auto;
+  padding:clamp(16px,3vw,28px);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="container nav">
+    <div class="brand">
+      <img src="Logo.PNG" alt="Coralis">
+      <strong>Coralis</strong>
+      <span class="badge">En desarrollo</span>
+    </div>
+    <nav>
+      <a class="btn btn-ghost" href="index_fixed.html">Volver</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="card">
+    <h1>Únete a la lista de espera</h1>
+    <p class="lead">Déjanos tu email para recibir novedades del proyecto, invitaciones a la beta y la fecha de lanzamiento.</p>
+    <ul class="list">
+      <li>Actualizaciones del prototipo y pruebas</li>
+      <li>Acceso temprano a características</li>
+      <li>Promos de lanzamiento (edición limitada)</li>
+    </ul>
+
+    <form action="mailto:hello@coralis.io" method="post" enctype="text/plain">
+      <input class="input" type="email" name="email" placeholder="tu@email.com" required>
+      <input class="input" type="text" name="nombre" placeholder="tu nombre (opcional)" style="margin-top:.6rem">
+      <div class="actions">
+        <button class="btn btn-primary" type="submit">Quiero novedades</button>
+        <a class="btn btn-ghost" href="index_fixed.html">Volver a la web</a>
+      </div>
+      <div class="note">Solo usaremos tu correo para comunicaciones sobre Coralis. Podrás darte de baja cuando quieras.</div>
+    </form>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="row">
+    <div style="display:flex;align-items:center;gap:8px">
+      <img src="Logo.PNG" alt="" style="width:22px;height:22px;object-fit:contain">
+      <span>© <span id="y"></span> Coralis — Intelligent Dive System</span>
+    </div>
+    <div style="opacity:.85">Ocean Current · Sea Mist · Soft Coral</div>
+  </div>
+</footer>
+
+<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>

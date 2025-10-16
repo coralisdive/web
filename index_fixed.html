@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Coralis — Smart Dive System (en desarrollo)</title>
+<meta name="description" content="Coralis: máscara de buceo inteligente con HUD, sensores e IA on-device. Proyecto en fase de desarrollo.">
+
+<!-- Paleta Coralis (medio turquesa) -->
+<style>
+:root{
+  --deep-dive:#014F56;      /* texto principal + acentos oscuros */
+  --ocean-current:#059AA3;  /* turquesa medio (fondo y CTA) */
+  --sea-mist:#8FD0C8;       /* turquesa suave (bloques y detalles) */
+  --soft-coral:#F78E7C;     /* coral cálido (llamadas a la acción) */
+  --sand:#EAE5DD;           /* arena */
+  --paper:#FFFFFF;          /* tarjetas blancas */
+  --ink:#0E2E34;            /* texto */
+}
+
+/* Base */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:linear-gradient(180deg, color-mix(in srgb,var(--ocean-current) 22%, white) 0%, color-mix(in srgb,var(--sea-mist) 24%, white) 70%); color:var(--ink); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; line-height:1.6}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--deep-dive);text-decoration:none}
+.container{max-width:1150px;margin-inline:auto;padding:clamp(16px,2.2vw,28px)}
+.section{padding-block:clamp(28px,6vw,72px)}
+
+/* Header */
+.header{
+  position:sticky;top:0;z-index:30;
+  background:linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,.35));
+  backdrop-filter:saturate(120%) blur(8px);
+  border-bottom:1px solid rgba(1,109,117,.18);
+}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:.75rem 0}
+.brand{display:flex;align-items:center;gap:.6rem}
+.brand img{width:40px;height:40px;object-fit:contain}
+.brand strong{font-weight:800;color:var(--deep-dive);letter-spacing:.02em}
+.badge{background:var(--soft-coral);color:#fff;padding:.28rem .6rem;border-radius:999px;font-size:.8rem;font-weight:700}
+
+/* Botones */
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.8rem 1rem;border-radius:14px;font-weight:800;border:2px solid transparent;cursor:pointer;transition:.2s;
+}
+.btn-primary{background:var(--ocean-current);color:#fff}
+.btn-primary:hover{filter:brightness(1.05)}
+.btn-ghost{background:rgba(255,255,255,.6);border-color:rgba(1,109,117,.18);color:var(--deep-dive)}
+.btn-ghost:hover{background:rgba(255,255,255,.85)}
+
+/* Hero */
+.hero{padding-block:clamp(24px,5vw,54px)}
+.hero-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:26px;align-items:center}
+@media (max-width:980px){.hero-wrap{grid-template-columns:1fr}}
+h1{font-size:clamp(2rem,4.8vw,3.4rem);line-height:1.08;margin:.3rem 0 1rem;color:var(--deep-dive)}
+.lead{font-size:clamp(1.05rem,1.2vw,1.15rem);opacity:.95}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-top:.9rem}
+.kpi{background:var(--paper);border:1px solid rgba(1,109,117,.16);border-radius:14px;padding:.9rem;text-align:center}
+.kpi b{display:block;color:var(--deep-dive)}
+
+.card{
+  background:var(--paper);border:1px solid rgba(1,109,117,.16);
+  border-radius:18px;box-shadow:0 14px 40px rgba(1,109,117,.18);overflow:hidden
+}
+.card.pad{padding:18px}
+
+/* Bloques */
+h2{font-size:clamp(1.5rem,3.4vw,2.2rem);margin:0 0 1rem;color:var(--deep-dive)}
+.grid-2{display:grid;gap:clamp(14px,2vw,22px);grid-template-columns:1.1fr .9fr}
+@media (max-width:980px){.grid-2{grid-template-columns:1fr}}
+.grid-3{display:grid;gap:16px;grid-template-columns:repeat(3,1fr)}
+@media (max-width:900px){.grid-3{grid-template-columns:1fr 1fr}}
+@media (max-width:620px){.grid-3{grid-template-columns:1fr}}
+
+.feature{
+  display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:start;
+  background:var(--paper);border:1px solid rgba(1,109,117,.16);border-radius:16px;padding:16px
+}
+.icon{
+  width:48px;height:48px;border-radius:12px;display:grid;place-items:center;color:#fff;font-weight:900;
+  background:linear-gradient(135deg,var(--ocean-current),var(--sea-mist));
+}
+
+/* Galería */
+.gallery{display:grid;gap:12px;grid-template-columns:repeat(4,1fr)}
+@media (max-width:1100px){.gallery{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:760px){.gallery{grid-template-columns:repeat(2,1fr)}}
+.gallery img{border-radius:14px;border:5px solid #fff;box-shadow:0 10px 26px rgba(1,109,117,.18)}
+
+/* Footer */
+.footer{padding:34px 0;color:#073137;border-top:1px solid rgba(1,109,117,.18);background:linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,.15))}
+
+/* ===== Chat flotante ===== */
+.chat-fab{
+  position:fixed;right:18px;bottom:18px;z-index:9999;
+  width:58px;height:58px;border:none;border-radius:50%;
+  display:grid;place-items:center;cursor:pointer;
+  background:#fff;box-shadow:0 10px 24px rgba(0,0,0,.18), inset 0 0 0 2px rgba(1,109,117,.15);
+}
+.chat-fab img{width:30px;height:30px;object-fit:contain}
+.chat-panel{
+  position:fixed;right:18px;bottom:86px;z-index:9998;
+  width:min(420px,95vw);height:min(72vh,680px);
+  background:#fff;border-radius:16px;overflow:hidden;
+  box-shadow:0 26px 55px rgba(0,0,0,.28);
+  border:1px solid rgba(1,109,117,.2);
+  transform:translateY(16px);opacity:0;pointer-events:none;transition:.25s ease;
+}
+.chat-panel.open{transform:translateY(0);opacity:1;pointer-events:auto}
+.chat-head{
+  background:linear-gradient(135deg,var(--deep-dive),var(--ocean-current));
+  color:#fff;display:flex;align-items:center;justify-content:space-between;padding:10px 12px
+}
+.chat-head .mini{display:flex;gap:10px;align-items:center}
+.chat-head img{width:20px;height:20px}
+.chat-close{
+  background:transparent;border:1px solid rgba(255,255,255,.6);
+  color:#fff;border-radius:10px;padding:.35rem .55rem;cursor:pointer
+}
+.chat-iframe{border:0;width:100%;height:calc(100% - 46px)}
+</style>
+</head>
+
+<body>
+<!-- Header -->
+<header class="header">
+  <div class="container nav">
+    <div class="brand">
+      <img src="Logo.PNG" alt="Coralis logo">
+      <strong>Coralis</strong>
+      <span class="badge">En desarrollo</span>
+    </div>
+    <nav style="display:flex;gap:.6rem;align-items:center">
+      <a class="btn btn-ghost" href="#como-funciona">Cómo funciona</a>
+      <a class="btn btn-ghost" href="#galeria">Galería</a>
+      <a class="btn btn-primary" href="subscribe.html">Lista de espera</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container hero-wrap">
+    <div>
+      <h1>Claridad bajo el agua con <span style="color:#fff;background:linear-gradient(135deg,var(--ocean-current),var(--sea-mist));padding:.1rem .4rem;border-radius:.45rem">HUD</span> e <span style="color:var(--soft-coral)">IA on-device</span></h1>
+      <p class="lead">
+        La máscara Coralis integra un micro-HUD, sensores de profundidad, brújula y temperatura,
+        y un sistema de asistencia que se ejecuta en la propia máscara — <b>100% offline</b> bajo el agua.
+        Datos esenciales y alertas sin apartar la vista del entorno.
+      </p>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.8rem">
+        <a class="btn btn-primary" href="subscribe.html">Cómo funciona</a>
+        <a class="btn btn-ghost" href="#galeria">Ver prototipos</a>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><b>8–10 h</b>autonomía estimada</div>
+        <div class="kpi"><b>30 m</b>profundidad recreativa</div>
+        <div class="kpi"><b>100% offline</b>IA en el dispositivo</div>
+      </div>
+    </div>
+    <div class="card">
+      <img src="Gafas front.PNG" alt="Máscara Coralis — vista frontal">
+    </div>
+  </div>
+</section>
+
+<!-- Producto / Case -->
+<section class="container section grid-2">
+  <div class="card"><img src="Gafas case.PNG" alt="Funda de carga estanca — Coralis"></div>
+  <div class="card pad" style="background:linear-gradient(135deg, #fff 70%, color-mix(in srgb,var(--sea-mist) 25%, #fff));">
+    <h2>Comodidad, durabilidad y carga estanca</h2>
+    <p>
+      Visor con tratamiento antivaho y antiarañazos, silicona hipoalergénica y sellado IP68+. La funda funciona como
+      <b>dock de carga inalámbrica</b> y protección de transporte. Controles físicos sencillos para uso con guantes.
+    </p>
+    <p>Autonomía estimada de <b>8–10 h</b> de uso continuo y actualizaciones desde la app en superficie.</p>
+  </div>
+</section>
+
+<!-- Cómo funciona -->
+<section id="como-funciona" class="container section">
+  <h2>Cómo funciona bajo el agua</h2>
+  <div class="grid-3">
+    <div class="feature">
+      <div class="icon">HUD</div>
+      <div>
+        <strong>Head-Up Display</strong>
+        <p>Micro-HUD que proyecta profundidad, rumbo, tiempo y alertas en tu campo de visión, sin apartar la mirada del entorno.</p>
+      </div>
+    </div>
+    <div class="feature">
+      <div class="icon">AI</div>
+      <div>
+        <strong>IA sin conexión</strong>
+        <p>Asistencia local (<i>edge</i>) para detección básica y avisos de seguridad, incluso sin cobertura. Sincronización a la app al salir.</p>
+      </div>
+    </div>
+    <div class="feature">
+      <div class="icon">🔗</div>
+      <div>
+        <strong>Conectividad</strong>
+        <p>Bluetooth/Wi-Fi para diario de inmersiones, configuración del HUD y actualizaciones de firmware (en superficie).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Galería -->
+<section id="galeria" class="container section">
+  <h2>Prototipos y vistas</h2>
+  <div class="gallery">
+    <img src="Gafas side 1.jpg" alt="Vista lateral 1 — Coralis">
+    <img src="Gafas side 2.jpg" alt="Vista lateral 2 — Coralis">
+    <img src="Gafas front.PNG" alt="Vista frontal — Coralis">
+    <img src="Gafas case.PNG" alt="Funda estanca — Coralis">
+  </div>
+</section>
+
+<!-- Packaging -->
+<section class="container section grid-2" id="lanzamiento">
+  <div class="card"><img src="Packaing gafas.PNG" alt="Packaging — Coralis Intelligent Dive System"></div>
+  <div class="card pad" style="background:linear-gradient(135deg, color-mix(in srgb,var(--sea-mist) 18%, #fff), #fff);">
+    <h2>Lanzamiento (edición inicial prevista)</h2>
+    <p>
+      Actualmente en <b>fase de validación y certificaciones</b> (CE/ISO/EN). Anunciaremos la edición limitada tras las pruebas de campo.
+      Únete a la lista de espera para enterarte primero y solicitar acceso al programa beta.
+    </p>
+    <p style="margin-top:.6rem">
+      <a class="btn btn-primary" href="subscribe.html">Quiero novedades</a>
+    </p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container" style="display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap">
+    <div style="display:flex;gap:10px;align-items:center">
+      <img src="Logo.PNG" alt="" style="width:26px;height:26px;object-fit:contain">
+      <div>© <span id="y"></span> Coralis — Intelligent Dive System · Proyecto en desarrollo</div>
+    </div>
+    <div style="opacity:.8">Paleta: Ocean Current · Sea Mist · Soft Coral</div>
+  </div>
+</footer>
+
+<!-- FAB (botón) del chat -->
+<button class="chat-fab" id="chatFab" aria-label="Abrir chat Coralis">
+  <img src="Logo.PNG" alt="Abrir chat">
+</button>
+
+<!-- Panel del chat -->
+<div class="chat-panel" id="chatPanel" aria-hidden="true">
+  <div class="chat-head">
+    <div class="mini" style="display:flex;gap:10px;align-items:center">
+      <img src="Logo.PNG" alt="">
+      <strong>Coralis · Asistente</strong>
+    </div>
+    <button class="chat-close" id="chatClose">Cerrar</button>
+  </div>
+  <iframe
+    class="chat-iframe"
+    title="Coralis Chatbot"
+    src="https://bot.writesonic.com/share/bot/e2e594d8-b8fd-4ee7-b7f4-28ccdb11b503">
+  </iframe>
+</div>
+
+<script>
+  // Año en footer
+  document.getElementById('y').textContent = new Date().getFullYear();
+
+  // Chat toggle
+  const fab = document.getElementById('chatFab');
+  const panel = document.getElementById('chatPanel');
+  const closeBtn = document.getElementById('chatClose');
+  const openChat = () => { panel.classList.add('open'); panel.setAttribute('aria-hidden','false'); }
+  const closeChat = () => { panel.classList.remove('open'); panel.setAttribute('aria-hidden','true'); }
+  fab.addEventListener('click', () => panel.classList.contains('open') ? closeChat() : openChat());
+  closeBtn.addEventListener('click', closeChat);
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeChat(); });
+</script>
+</body>
+</html>
